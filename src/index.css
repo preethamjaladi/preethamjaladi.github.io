@@ -1,0 +1,184 @@
+@import 'tailwindcss';
+
+:root {
+  color-scheme: dark;
+  font-family: Inter, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  background: #020617;
+  color: #f8fafc;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --page: #f8f5ef;
+  --section: #f0ebe2;
+  --card: #fffcf7;
+  --text-primary: #1c2430;
+  --text-secondary: #606875;
+  --border: #ddd7cc;
+  --button: #202938;
+  --button-text: #ffffff;
+}
+
+html {
+  background: #020617;
+}
+
+:root[data-theme='light'] {
+  background: var(--page);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(148, 163, 184, 0.12), transparent 25%),
+    #020617;
+}
+
+:root[data-theme='light'] body {
+  background:
+    radial-gradient(circle at top, rgba(130, 111, 79, 0.08), transparent 25%),
+    var(--page);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.site-shell {
+  background-color: #020617;
+}
+
+:root[data-theme='light'] .site-shell {
+  background-color: var(--page);
+  color: var(--text-primary);
+}
+
+:root[data-theme='light'] footer {
+  background-color: var(--section);
+}
+
+:root[data-theme='light'] [class~='bg-slate-950'] {
+  background-color: var(--card);
+}
+
+:root[data-theme='light'] [class~='bg-slate-950/90'] {
+  background-color: rgb(248 245 239 / 90%);
+}
+
+:root[data-theme='light'] [class~='bg-slate-900'] {
+  background-color: var(--card);
+}
+
+:root[data-theme='light'] [class~='bg-slate-900/40'] {
+  background-color: var(--section);
+}
+
+:root[data-theme='light'] [class~='bg-slate-900/80'] {
+  background-color: var(--card);
+}
+
+:root[data-theme='light'] .site-shell[class~='bg-slate-950'] {
+  background-color: var(--page);
+}
+
+:root[data-theme='light'] [class~='bg-white'] {
+  background-color: var(--button);
+}
+
+:root[data-theme='light'] [class~='text-white'],
+:root[data-theme='light'] [class~='text-slate-100'] {
+  color: var(--text-primary);
+}
+
+:root[data-theme='light'] [class~='text-slate-200'],
+:root[data-theme='light'] [class~='text-slate-300'],
+:root[data-theme='light'] [class~='text-slate-400'] {
+  color: var(--text-secondary);
+}
+
+:root[data-theme='light'] [class~='text-slate-950'] {
+  color: var(--button-text);
+}
+
+:root[data-theme='light'] [class~='border-slate-800'],
+:root[data-theme='light'] [class~='border-slate-700'] {
+  border-color: var(--border);
+}
+
+:root[data-theme='light'] [class~='border-slate-600'] {
+  border-color: #b9b1a3;
+}
+
+:root[data-theme='light'] [class~='bg-slate-100'] {
+  background-color: var(--text-primary);
+}
+
+:root[data-theme='light'] [class~='hover:bg-slate-900']:hover,
+:root[data-theme='light'] [class~='hover:bg-slate-800']:hover {
+  background-color: #e7e0d5;
+}
+
+:root[data-theme='light'] [class~='hover:border-slate-500']:hover,
+:root[data-theme='light'] [class~='hover:border-slate-600']:hover {
+  border-color: #aaa293;
+}
+
+:root[data-theme='light'] [class~='hover:text-white']:hover {
+  color: var(--text-primary);
+}
+
+:root[data-theme='light'] [class~='hover:text-slate-200']:hover {
+  color: var(--text-primary);
+}
+
+:root[data-theme='light'] [class~='ring-offset-slate-950'] {
+  --tw-ring-offset-color: var(--page);
+}
+
+:root[data-theme='light'] [class~='focus-visible:ring-white/70']:focus-visible {
+  --tw-ring-color: rgb(32 41 56 / 70%);
+}
+
+:root[data-theme='light'] [class~='border-emerald-500/30'] {
+  border-color: #a9bba2;
+}
+
+:root[data-theme='light'] [class~='bg-emerald-500/10'] {
+  background-color: #e8efe4;
+}
+
+:root[data-theme='light'] [class~='text-emerald-300'] {
+  color: #355d3b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::selection {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+:root[data-theme='light'] ::selection {
+  background: rgb(32 41 56 / 16%);
+}
