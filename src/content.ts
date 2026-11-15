@@ -15,6 +15,9 @@ export type Project = {
   plannedStack?: string[]
   repo?: string
   demo?: string
+  note?: string
+  meta?: string
+  paper?: string
 }
 
 export type Experience = {
@@ -38,6 +41,7 @@ export const portfolio = {
   resumeUrl: '/resume.pdf',
   nav: [
     { label: 'Projects', href: '#projects' },
+    { label: 'Research', href: '#research' },
     { label: 'Experience', href: '#experience' },
     { label: 'Skills', href: '#skills' },
     { label: 'Contact', href: '#contact' },
@@ -51,18 +55,19 @@ export const portfolio = {
   },
   projects: [
     {
-      name: 'ResumeMatch',
+      name: 'Resume Analyzer',
       category: 'AI Engineering / Full Stack',
       problem:
-        'Job seekers need a clear view of how their resume aligns with a role and which requirements need stronger evidence.',
+        'Job seekers get vague feedback on how well a resume fits a role. They can’t see which requirements lack evidence, and tools that return a single unexplained AI score give them nothing to check or trust.',
       description:
-        'An AI-powered resume analysis workflow that evaluates resumes against job descriptions, identifies skill gaps, calculates compatibility scores, and generates personalized recommendations through LangGraph.',
-      stack: ['Python', 'LangGraph', 'Pydantic', 'Groq', 'Structured Outputs'],
-      plannedStack: ['FastAPI', 'Next.js', 'TypeScript', 'Supabase', 'PostgreSQL'],
+        'A full-stack, AI powered analyzer that compares a resume with a job description through a multi stage LangGraph workflow: it extracts structured data from both, matches requirements, verifies evidence, and recommends improvements. The score comes from deterministic Python, so the same input always gives the same, explainable result. Users approve, edit, or reject each suggestion before any change is applied.',
+      stack: ['Python', 'LangGraph', 'Pydantic', 'Groq', 'FastAPI', 'React', 'TypeScript', 'Structured Outputs', 'Human-in-the-Loop'],
+      repo: 'https://github.com/preethamjaladi/resume_analyzer',
       highlights: [
-        'Orchestrated resume extraction, job requirement analysis, skill comparison, scoring, and recommendations in a sequential LangGraph workflow.',
-        'Used Pydantic schemas and Groq-hosted models to structure resume and job-description text for downstream comparison.',
-        'Implemented a deterministic skill-coverage calculation in Python and generated a readable analysis report from the comparison results.',
+        'Orchestrated resume extraction, requirement matching, evidence verification, and recommendations as a multi-stage LangGraph workflow.',
+        'Used Pydantic schemas and Groq-hosted models to turn resume and job-description text into structured data for downstream comparison.',
+        'Replaced LLM-generated scoring with a deterministic Python calculation, keeping results consistent and explainable.',
+        'Built human-in-the-loop review so users approve, modify, or reject each AI suggestion, served through FastAPI and a React/TypeScript interface, with tests covering matching, scoring, review, and edit application.',
       ],
       contribution: '',
       achievement: '',
@@ -70,33 +75,38 @@ export const portfolio = {
     {
       name: 'CalmSpace',
       demo: 'https://calmspace-kv1c.onrender.com',
+      repo: 'https://github.com/preethamjaladi/calmspace',
+      note: 'CalmSpace is a self-help tool, not a substitute for professional care.',
       category: 'Generative AI / Full Stack',
       problem:
-        'People experiencing anxiety need accessible tools for grounding, breathing, and reflecting on their mood.',
+        'People dealing with anxiety need accessible tools for grounding, breathing, and reflecting on their mood, without having to sign up or wade through clutter.',
       description:
-        'An AI-powered wellness application providing personalized anxiety-relief guidance, interactive grounding exercises, breathing tools, and mood tracking through a responsive interface.',
+        'A Gemini-powered wellness app that gives personalized anxiety-relief guidance alongside interactive grounding exercises, breathing tools, and mood tracking, all in a responsive interface. If the AI service goes down, it falls back to predefined exercises, so users are never left without support.',
       stack: ['Gemini Flash', 'Google Gen AI SDK', 'React', 'TypeScript', 'Node.js', 'Express.js', 'Tailwind CSS'],
       highlights: [
         'Integrated Gemini through the Google Gen AI SDK with context-aware prompts and JSON-schema-constrained guidance responses.',
-        'Built Express inference APIs with a deterministic, symptom-aware fallback for access to predefined exercises during AI service outages.',
-        'Created responsive breathing and grounding tools, browser audio, and locally persisted mood history for supportive wellness use.',
+        'Built Express inference APIs with a deterministic, symptom aware fallback to predefined exercises during AI service outages.',
+        'Created responsive breathing and grounding tools, browser audio, and locally persisted mood history.',
+        'Deployed as a public live demo.',
       ],
       contribution: '',
       achievement: '',
     },
+  ] as Project[],
+  research: [
     {
-      name: 'Machine Learning Research Project',
+      name: 'Offensive Language Detection in Social Media Using Ensemble Techniques',
+      meta: 'ICCPCT 2023 · IEEE · First author · August 2023',
       problem:
-        'Classification workflows often require careful evaluation and clear reporting so model quality is measurable and actionable.',
+        'Social platforms need automated ways to flag offensive and hate-speech content at scale, but it isn’t obvious which classical models and text features hold up best.',
       description:
-        'A research-oriented machine learning project focused on data preparation, feature selection, model comparison, and evaluation metrics for classification tasks.',
-      stack: ['Python', 'Scikit-learn', 'Machine Learning', 'Evaluation', 'Data Pipelines'],
+        'A comparative study of six classifiers (Naive Bayes, SVM, XGBoost, KNN, Decision Tree, and Random Forest) on Twitter data, using bag-of-words and TF-IDF features and evaluated on accuracy, precision, recall, and F1-score.',
+      stack: ['Python', 'Scikit-learn', 'NLP', 'TF-IDF', 'Text Classification', 'XGBoost', 'Random Forest'],
       contribution:
-        'Handled preprocessing, model selection, and result analysis to compare approaches against practical metrics and documented methodological tradeoffs.',
+        'Developed and evaluated text classification models across six algorithms and two feature representations, comparing them on multiple metrics instead of accuracy alone.',
       achievement:
-        'Produced an interpretable evaluation workflow that surfaced model strengths, weaknesses, and the most relevant metrics for decision-making.',
-      repo: 'https://github.com/your-username/ml-research',
-      demo: 'https://example.com/ml-research-demo',
+        'Random Forest with TF-IDF features reached 97% accuracy, the best of the six models tested.',
+      paper: 'https://doi.org/10.1109/ICCPCT58313.2023.10245673',
     },
   ] as Project[],
   experience: [

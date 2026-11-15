@@ -3,6 +3,7 @@ import {
   ArrowRight,
   BriefcaseBusiness,
   Code2,
+  ChevronDown,
   Download,
   ExternalLink,
   Mail,
@@ -14,6 +15,25 @@ import {
 } from 'lucide-react'
 import { portfolio } from './content'
 import Steals from './pages/Steals'
+import ProjectSurface from './components/ProjectSurface'
+import { updatePointerHighlight } from './utils/pointerHighlight'
+
+const projectSections = [
+  {
+    id: 'projects',
+    label: 'Featured projects',
+    heading: 'Work that demonstrates technical depth.',
+    itemLabel: 'Featured Project',
+    items: portfolio.projects,
+  },
+  {
+    id: 'research',
+    label: 'Research',
+    heading: 'Published work in applied NLP.',
+    itemLabel: 'Research Project',
+    items: portfolio.research,
+  },
+]
 
 const trackAnalytics = (label: string) => {
   if (typeof window === 'undefined') {
@@ -44,7 +64,7 @@ function App() {
     document.documentElement.style.colorScheme = nextTheme
     document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute(
       'content',
-      nextTheme === 'light' ? '#F8F5EF' : '#020617',
+      nextTheme === 'light' ? '#F6F2FC' : '#0c0918',
     )
 
     try {
@@ -78,7 +98,7 @@ function App() {
             <span>{portfolio.name}</span>
           </a>
 
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
             {themeToggle}
             <button
               type="button"
@@ -92,7 +112,7 @@ function App() {
             </button>
           </div>
 
-          <nav className="hidden items-center gap-6 md:flex" aria-label="Main navigation">
+          <nav className="hidden items-center gap-6 lg:flex" aria-label="Main navigation">
             {portfolio.nav.map((item) => (
               <a
                 key={item.href}
@@ -116,7 +136,7 @@ function App() {
         </div>
 
         {mobileMenuOpen && (
-          <nav id="mobile-nav" className="border-t border-slate-800 bg-slate-950 px-4 py-3 md:hidden" aria-label="Mobile navigation">
+          <nav id="mobile-nav" className="border-t border-slate-800 bg-slate-950 px-4 py-3 lg:hidden" aria-label="Mobile navigation">
             <div className="flex flex-col gap-3">
               {portfolio.nav.map((item) => (
                 <a
@@ -145,7 +165,7 @@ function App() {
         )}
       </header>
 
-      {isStealsPage ? <Steals /> : <main>
+      {isStealsPage ? <Steals /> : <main className="portfolio-main">
         <section id="home" className="mx-auto max-w-6xl px-4 pb-20 pt-16 sm:px-6 lg:px-8 lg:pb-24 lg:pt-24">
           <div className="flex flex-col items-center text-center">
             <div className="w-full">
@@ -181,39 +201,39 @@ function App() {
           </div>
         </section>
 
-        <section id="projects" className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
+        {projectSections.map((section) => (
+        <section key={section.id} id={section.id} className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-400">Featured projects</p>
+              <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-400">{section.label}</p>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Work that demonstrates technical depth.
+                {section.heading}
               </h2>
             </div>
           </div>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            {portfolio.projects.map((project, index) => (
-              <article key={project.name} className="group flex h-full flex-col rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-lg shadow-slate-950/20 transition hover:-translate-y-1 hover:border-slate-600">
-                <div className="mb-5 flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Featured Project {String(index + 1).padStart(2, '0')}</p>
-                    {project.category && <p className="mt-2 text-xs text-slate-400">{project.category}</p>}
-                    <h3 className="mt-2 text-2xl font-semibold text-white">{project.name}</h3>
-                  </div>
-                  {project.repo && !project.repo.includes('your-username') && (
-                  <a
-                    href={project.repo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 bg-slate-950 text-slate-200 transition hover:border-slate-500 hover:text-white"
-                    aria-label={`View ${project.name} repository`}
-                    onClick={() => trackAnalytics(`project_repo_${project.name}`)}
-                  >
-                    <Code2 size={18} />
-                  </a>
-                  )}
-                </div>
-
+          <div className="project-tiles mt-10 grid grid-cols-1 items-start gap-6 md:grid-cols-2">
+            {section.items.map((project, index) => (
+              <ProjectSurface
+                key={project.name}
+                note={project.note}
+                summary={
+                  <>
+                    <span className="block text-xs uppercase tracking-[0.2em] text-slate-400">{section.itemLabel} {String(index + 1).padStart(2, '0')}</span>
+                    {project.category && <span className="mt-3 block text-xs text-slate-400">{project.category}</span>}
+                    <h3 className="mt-3 text-2xl font-semibold text-white">{project.name}</h3>
+                    {project.meta && <span className="mt-3 block text-xs leading-5 text-slate-400">{project.meta}</span>}
+                    <span className="mt-4 block text-sm leading-6 text-slate-300">{project.problem}</span>
+                    <span className="mt-6 flex items-center justify-between gap-3 text-sm font-medium text-slate-200">
+                      <span className="tile-open-label">Explore project</span>
+                      <span className="tile-close-label">Close details</span>
+                      <ChevronDown size={18} aria-hidden="true" className="details-chevron shrink-0" />
+                    </span>
+                  </>
+                }
+              >
+                <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+                <div className="min-w-0">
                 <p className="text-sm font-medium text-slate-200">Problem</p>
                 <p className="mt-2 text-sm leading-6 text-slate-300">{project.problem}</p>
 
@@ -236,16 +256,20 @@ function App() {
                   </p>
                 )}
 
+                </div>
+                <div className="min-w-0 border-t border-slate-800 pt-5 md:border-l md:border-t-0 md:pl-8 md:pt-0">
+                <h4 className="text-sm font-medium text-slate-200">
+                  {project.highlights ? 'Technical highlights' : 'Engineering details'}
+                </h4>
                 {project.highlights ? (
-                  <div className="mt-6 border-t border-slate-800 pt-5">
-                    <p className="text-sm font-medium text-slate-200">Technical highlights</p>
+                  <div>
                     <ul className="mt-2 list-disc space-y-2 pl-4 text-sm leading-6 text-slate-300">
                       {project.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
                     </ul>
                   </div>
                 ) : (
                   <>
-                <div className="mt-6 border-t border-slate-800 pt-5">
+                <div className="mt-4">
                   <p className="text-sm font-medium text-slate-200">Engineering contribution</p>
                   <p className="mt-2 text-sm leading-6 text-slate-300">{project.contribution}</p>
                 </div>
@@ -259,6 +283,18 @@ function App() {
                 )}
 
                 <div className="mt-6 flex flex-wrap gap-3 pt-2">
+                  {project.paper && (
+                    <a
+                      href={project.paper}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-slate-200"
+                      onClick={() => trackAnalytics(`project_paper_${project.name}`)}
+                    >
+                      Read the paper
+                      <ExternalLink size={14} aria-hidden="true" />
+                    </a>
+                  )}
                   {project.repo && !project.repo.includes('your-username') && (
                   <a
                     href={project.repo}
@@ -267,7 +303,7 @@ function App() {
                     className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-slate-200"
                     onClick={() => trackAnalytics(`project_repo_${project.name}`)}
                   >
-                    GitHub Repository
+                    Code
                     <ExternalLink size={14} />
                   </a>
                   )}
@@ -284,10 +320,14 @@ function App() {
                     </a>
                   )}
                 </div>
-              </article>
+                </div>
+                </div>
+              </ProjectSurface>
             ))}
           </div>
         </section>
+
+        ))}
 
         <section id="experience" className="border-y border-slate-800 bg-slate-900/40">
           <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
@@ -298,7 +338,7 @@ function App() {
 
             <div className="mt-10 space-y-6">
               {portfolio.experience.map((role) => (
-                <article key={`${role.company}-${role.period}`} className="rounded-3xl border border-slate-800 bg-slate-950 p-6 sm:p-8">
+                <article key={`${role.company}-${role.period}`} onPointerMove={updatePointerHighlight} className="pointer-surface rounded-3xl border border-slate-800 bg-slate-950 p-6 sm:p-8">
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <p className="text-xl font-semibold text-white">{role.title}</p>
@@ -334,7 +374,7 @@ function App() {
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {portfolio.skills.map((group) => (
-              <div key={group.title} className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+              <div key={group.title} onPointerMove={updatePointerHighlight} className="pointer-surface rounded-3xl border border-slate-800 bg-slate-900 p-6">
                 <h3 className="text-lg font-semibold text-white">{group.title}</h3>
                 <ul className="mt-4 flex flex-wrap gap-2">
                   {group.items.map((item) => (
@@ -353,7 +393,7 @@ function App() {
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-400">Education</p>
             <div className="mt-10 grid gap-6 md:grid-cols-2">
               {portfolio.education.map((item) => (
-                <article key={item.school} className="rounded-3xl border border-slate-800 bg-slate-950 p-6">
+                <article key={item.school} onPointerMove={updatePointerHighlight} className="pointer-surface rounded-3xl border border-slate-800 bg-slate-950 p-6">
                   <p className="text-lg font-semibold text-white">{item.school}</p>
                   <p className="mt-2 text-base text-slate-300">{item.degree}</p>
                   <p className="mt-4 text-sm text-slate-400">{item.period}</p>
@@ -373,7 +413,8 @@ function App() {
             <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
               <a
                 href={`mailto:${portfolio.profileLinks.email}`}
-                className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-200 transition hover:border-slate-600 hover:text-white"
+                onPointerMove={updatePointerHighlight}
+                className="pointer-surface flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-200 transition hover:border-slate-600 hover:text-white"
                 onClick={() => trackAnalytics('contact_email')}
               >
                 <Mail size={18} className="text-slate-300" />
@@ -382,9 +423,10 @@ function App() {
 
               <a
                 href={portfolio.profileLinks.linkedin}
+                onPointerMove={updatePointerHighlight}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-200 transition hover:border-slate-600 hover:text-white"
+                className="pointer-surface flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-200 transition hover:border-slate-600 hover:text-white"
                 onClick={() => trackAnalytics('contact_linkedin')}
               >
                 <BriefcaseBusiness size={18} className="text-slate-300" />
@@ -393,16 +435,17 @@ function App() {
 
               <a
                 href={portfolio.profileLinks.github}
+                onPointerMove={updatePointerHighlight}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-200 transition hover:border-slate-600 hover:text-white"
+                className="pointer-surface flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-200 transition hover:border-slate-600 hover:text-white"
                 onClick={() => trackAnalytics('contact_github')}
               >
                 <Code2 size={18} className="text-slate-300" />
                 <span className="text-sm">GitHub</span>
               </a>
 
-              <div className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-200">
+              <div onPointerMove={updatePointerHighlight} className="pointer-surface flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-slate-200">
                 <MapPin size={18} className="text-slate-300" />
                 <span className="text-sm">{portfolio.profileLinks.location}</span>
               </div>
